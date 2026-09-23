@@ -13,4 +13,24 @@ int main(void) {
 	cJSON_free(jsontext);
 
 	cJSON_Delete(json);
+
+	// simple CURL example
+	CURL *curl = curl_easy_init();
+	if (!curl) {
+		fprintf(stderr, "[ERROR] failed to initialize libcurl\n");
+		return 1;
+	}
+
+	curl_easy_setopt(curl, CURLOPT_URL, "https://example.com");
+
+	CURLcode result = curl_easy_perform(curl);
+
+	if (result != CURLE_OK) {
+		fprintf(stderr, "[ERROR] curl error: %s\n", 
+			curl_easy_strerror(result));
+		return 1;
+	}
+
+	curl_easy_cleanup(curl);
+	return 0;
 }
